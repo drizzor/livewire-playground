@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class Register extends Component
 {
-    public $email = '';
+    public $email = ''; 
     public $password = '';
     public $passwordConfirmation = '';
 
@@ -19,6 +19,16 @@ class Register extends Component
             ->section('content');
     }
 
+    public function updatedEmail()
+    {
+        $this->validate(['email' => 'unique:users']);
+    }
+
+    public function updatedPasswordConfirmation()
+    {
+        $this->validate(['passwordConfirmation' => 'same:password']);        
+    }
+
     public function register()
     {
         $data = $this->validate([
@@ -26,10 +36,13 @@ class Register extends Component
             'password' => 'required|min:6|same:passwordConfirmation',
         ]);
 
-        User::create([
+        $user = User::create([
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        // Connecting created user
+        auth()->login($user);
 
         return redirect('/');
     }
