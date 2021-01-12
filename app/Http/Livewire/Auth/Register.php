@@ -12,12 +12,10 @@ class Register extends Component
     public $password = '';
     public $passwordConfirmation = '';
 
-    public function render()
-    {
-        return view('livewire.auth.register')
-            ->extends('layouts.app')
-            ->section('content');
-    }
+    protected $rules = [
+        'email' => 'required|email|unique:users',
+        'password' => 'required|min:6|same:passwordConfirmation',
+    ];
 
     public function updatedEmail()
     {
@@ -31,19 +29,22 @@ class Register extends Component
 
     public function register()
     {
-        $data = $this->validate([
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|same:passwordConfirmation',
-        ]);
+        $data = $this->validate();
 
         $user = User::create([
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'email' => $this->email,
+            'password' => Hash::make($this->password),
         ]);
 
         // Connecting created user
         auth()->login($user);
 
         return redirect('/');
+    }
+
+    public function render()
+    {
+        return view('livewire.auth.register')
+            ->layout('layouts.auth');
     }
 }
