@@ -26,7 +26,7 @@ class Register extends Component
 
     public function updatedPasswordConfirmation()
     {
-        $this->validate(['passwordConfirmation' => 'same:password']);        
+        $this->validate(['passwordConfirmation' => 'same:password']);
     }
 
     public function register()
