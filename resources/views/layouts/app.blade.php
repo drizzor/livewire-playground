@@ -31,10 +31,10 @@
                     </div>
                     <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
                         <div class="flex-shrink-0 flex items-center px-4">
-                            <img class="h-8 w-auto" src="/img/logos/workflow-logo-on-brand.svg" alt="Workflow">
+                            <img class="h-8 w-auto" src="{{ asset('img/logo.svg') }}" alt="Site logo">
                         </div>
                         <nav class="mt-5 px-2 space-y-1">
-                            <a href="#"
+                            <a href="{{ route('dashboard.index') }}"
                                 class="group flex items-center px-2 py-2 text-base leading-6 font-medium rounded-md text-white bg-indigo-900 focus:outline-none focus:bg-indigo-700 transition ease-in-out duration-150">
                                 <svg class="mr-4 h-6 w-6 text-indigo-400 group-hover:text-indigo-300 group-focus:text-indigo-300 transition ease-in-out duration-150"
                                     stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -67,6 +67,7 @@
                         </a>
                     </div>
                 </div>
+
                 <div class="flex-shrink-0 w-14">
                     <!-- Force sidebar to shrink to fit close icon -->
                 </div>
@@ -82,7 +83,7 @@
                     </div>
                     <!-- Sidebar component, swap this element with another sidebar if you like -->
                     <nav class="mt-5 space-y-1 flex-1 px-2 bg-indigo-800">
-                        <a href="#"
+                        <a href="{{ route('dashboard.index') }}"
                             class="group flex items-center px-2 py-2 text-sm leading-5 font-medium text-white rounded-md bg-indigo-900 focus:outline-none focus:bg-indigo-700 transition ease-in-out duration-150">
                             <svg class="mr-3 h-6 w-6 text-indigo-400 group-focus:text-indigo-300 transition ease-in-out duration-150"
                                 stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -132,11 +133,22 @@
                 </button>
             </div>
 
+            <div class="bg-gray-200 w-full py-3 px-3">
+                <div class="flex justify-end mr-5">
+                    <a href="#">
+                        <svg class="w-5 text-gray-700 hover:text-gray-800" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
             <main class="flex-1 relative z-0 overflow-y-auto pt-2 pb-6 focus:outline-none md:py-6" tabindex="0"
                 x-data="" x-init="$el.focus()">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                    <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
-                </div>
+
+
 
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                     {{ $slot }}
