@@ -1,19 +1,29 @@
 <x-layouts.base>
-    <div class="h-screen flex overflow-hidden bg-gray-100" x-data="{ sidebarOpen: false }"
-        @keydown.window.escape="sidebarOpen = false">
+    <div 
+        x-data="{ sidebarOpen: false }"
+        @keydown.window.escape="sidebarOpen = false"
+        class="h-screen flex overflow-hidden bg-gray-100" 
+    >
         <!-- Off-canvas menu for mobile -->
         <div x-show="sidebarOpen" class="md:hidden" style="display: none;">
             <div class="fixed inset-0 flex z-40">
-                <div @click="sidebarOpen = false" x-show="sidebarOpen"
+                <div 
+                    @click="sidebarOpen = false" 
+                    x-show="sidebarOpen"
                     x-description="Off-canvas menu overlay, show/hide based on off-canvas menu state."
                     x-transition:enter="transition-opacity ease-linear duration-300"
-                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                    x-transition:enter-start="opacity-0" 
+                    x-transition:enter-end="opacity-100"
                     x-transition:leave="transition-opacity ease-linear duration-300"
-                    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0"
+                    x-transition:leave-start="opacity-100" 
+                    x-transition:leave-end="opacity-0" 
+                    class="fixed inset-0"
                     style="display: none;">
                     <div class="absolute inset-0 bg-gray-600 opacity-75"></div>
                 </div>
-                <div x-show="sidebarOpen" x-description="Off-canvas menu, show/hide based on off-canvas menu state."
+                <div 
+                    x-show="sidebarOpen" 
+                    x-description="Off-canvas menu, show/hide based on off-canvas menu state."
                     x-transition:enter="transition ease-in-out duration-300 transform"
                     x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
                     x-transition:leave="transition ease-in-out duration-300 transform"
@@ -133,7 +143,8 @@
                 </button>
             </div>
 
-            <div class="bg-gray-200 w-full py-3 px-3">
+            {{-- Disconnect button --}}
+            <div class="w-full py-3 px-3">
                 <div class="flex justify-end mr-5">
                     <a href="#">
                         <svg class="w-5 text-gray-700 hover:text-gray-800" xmlns="http://www.w3.org/2000/svg"
@@ -143,17 +154,18 @@
                         </svg>
                     </a>
                 </div>
-            </div>
+            </div>            
 
             <main class="flex-1 relative z-0 overflow-y-auto pt-2 pb-6 focus:outline-none md:py-6" tabindex="0"
                 x-data="" x-init="$el.focus()">
-
-
 
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                     {{ $slot }}
                 </div>
             </main>
         </div>
+
+        <x-notification />
+
     </div>
 </x-layouts.base>

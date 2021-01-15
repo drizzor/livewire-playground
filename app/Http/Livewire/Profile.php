@@ -32,7 +32,9 @@ class Profile extends Component
             ->update([
                 'username' => $this->username,
                 'about' => $this->about,
-            ]);            
+            ]);       
+            
+        $this->dispatchBrowserEvent('notify', 'Profile sauvegardé!');
     }
 
     public function render()

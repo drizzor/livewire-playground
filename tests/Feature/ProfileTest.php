@@ -40,6 +40,17 @@ class ProfileTest extends TestCase
     }
 
     /** @test */
+    public function message_is_shown_on_save()
+    {
+        $user = User::factory()->create();
+
+        Livewire::actingAs($user)
+            ->test('profile')
+            ->call('save')
+            ->assertDispatchedBrowserEvent('notify');
+    }
+
+    /** @test */
     public function profile_info_is_pre_populated()
     {
         $user = User::factory()->create([

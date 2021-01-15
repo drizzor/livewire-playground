@@ -9,15 +9,20 @@
     {{-- Tailwind CSS --}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <livewire:styles />
+    {{-- Alpine js --}}
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 </head>
+
+<style>
+    [x-cloak] { display: none; }
+</style>
 
 <body class="antialiased font-sans bg-gray-200">
 
     {{ $slot }}
 
     <livewire:scripts />
-    <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js" data-turbolinks-eval="false" data-turbo-eval="false"></script>
+
 </body>
 
 </html>
