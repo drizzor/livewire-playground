@@ -133,7 +133,7 @@
                 </button>
             </div>
 
-            <div class="bg-gray-200 w-full py-3 px-3">
+            <div class="w-full py-3 px-3">
                 <div class="flex justify-end mr-5">
                     <a href="#">
                         <svg class="w-5 text-gray-700 hover:text-gray-800" xmlns="http://www.w3.org/2000/svg"

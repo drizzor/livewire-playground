@@ -32,7 +32,11 @@ class Profile extends Component
             ->update([
                 'username' => $this->username,
                 'about' => $this->about,
-            ]);            
+        ]);    
+        
+        // session()->flash('notify-saved');
+
+        $this->emitSelf('notify-saved');
     }
 
     public function render()
