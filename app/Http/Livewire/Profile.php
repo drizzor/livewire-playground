@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Profile extends Component
 {
+    public $saved = false;
     public $username = '';
     public $about = '';
 
@@ -32,7 +33,18 @@ class Profile extends Component
             ->update([
                 'username' => $this->username,
                 'about' => $this->about,
-            ]);            
+            ]);  
+            
+        $this->saved = true;
+    }
+
+    /**
+     * Hide error message when tipping again
+     */
+    public function updated($field)
+    {
+        if($field !== 'saved')
+            $this->saved = false;
     }
 
     public function render()

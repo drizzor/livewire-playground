@@ -54,6 +54,21 @@ class ProfileTest extends TestCase
     }
     
     /** @test */
+    public function message_is_shown_on_save()
+    {
+        $user = User::factory()->create([
+            'username' => 'foo',
+            'about' => 'bar',
+        ]);
+
+        Livewire::actingAs($user)
+            ->test('profile')
+            ->assertDontSee('Profile sauvegardé!')
+            ->call('save')
+            ->assertSee('Profile sauvegardé!');
+    }
+    
+    /** @test */
     public function username_must_be_less_than_24_characters()
     {
         $user = User::factory()->create();
