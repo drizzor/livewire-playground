@@ -7,7 +7,7 @@
         });
     "
     @change="$dispatch('input', $event.target.value )"
-    class="max-w-lg flex rounded-md shadow-sm"
+    class="flex rounded-md shadow-sm"
 >
     <span
         class="inline-flex items-center px-3 rounded-l-md border border-gray-300 bg-gray-50 text-gray-500 sm:text-sm"

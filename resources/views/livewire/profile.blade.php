@@ -13,7 +13,7 @@
             </x-input.group>
 
             <x-input.group label="A Propos" for="about" :error="$errors->first('about')" help-text="Quelque chose à ton propos.">
-                <x-input.textarea wire:model="about" id="about" rows="3" />
+                <x-input.rich-text wire:model.lazy="about" id="about" rows="3" :initial-value="$about" />
             </x-input.group>
             
             <x-input.group label="Photo" for="photo">
@@ -34,7 +34,6 @@
                 </div>
             </x-input.group>
         </div>
-
         <div class="mt-8 border-t border-gray-200 pt-5">
             <div class="space-x-3 flex justify-end items-center">
 

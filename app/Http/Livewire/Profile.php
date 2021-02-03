@@ -15,7 +15,7 @@ class Profile extends Component
 
     protected $rules = [
         'username' => 'required|max:24',
-        'about' => 'max:140',
+        'about' => 'max:500',
         'birthday' => 'sometimes|date_format:d/m/Y',
     ];
 
