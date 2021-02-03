@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -10,19 +11,22 @@ class Profile extends Component
 {
     public $username = '';
     public $about = '';
+    public $birthday = null;
 
     protected $rules = [
         'username' => 'required|max:24',
         'about' => 'max:140',
+        'birthday' => 'sometimes|date_format:d/m/Y',
     ];
 
     public function mount()
     {
         $this->username = auth()->user()->username;
         $this->about = auth()->user()->about;
+        $this->birthday = optional(auth()->user()->birthday)->format('d/m/Y');
     }
 
-    public function save()
+    public function save() 
     {
         $user = Auth::user();
 
@@ -32,6 +36,9 @@ class Profile extends Component
             ->update([
                 'username' => $this->username,
                 'about' => $this->about,
+                'birthday' => $this->birthday 
+                    ? Carbon::createFromFormat('d/m/Y', $this->birthday)->format('Y-m-d')
+                    : null,
         ]);    
         
         // session()->flash('notify-saved');

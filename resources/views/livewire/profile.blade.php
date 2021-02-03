@@ -8,9 +8,13 @@
                 <x-input.text wire:model="username" id="username" leading-add-on="hello.com/" />
             </x-input.group>
 
+            <x-input.group label="Date de naissance" for="birthday" :error="$errors->first('birthday')">
+                <x-input.date  wire:model="birthday" id="birthday" placeholder="DD/MM/YYYY" /> 
+            </x-input.group>
+
             <x-input.group label="A Propos" for="about" :error="$errors->first('about')" help-text="Quelque chose à ton propos.">
                 <x-input.textarea wire:model="about" id="about" rows="3" />
-            </x-input.group>   
+            </x-input.group>
             
             <x-input.group label="Photo" for="photo">
                 <div class="flex items-center">

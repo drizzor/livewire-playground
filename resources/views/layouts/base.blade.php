@@ -8,13 +8,14 @@
     <title>Livewire Playground</title>
     {{-- Tailwind CSS --}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <livewire:styles />
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <livewire:styles />
+    {{-- je vais pouvoir push le style souhaitée sur une page précise (voir date.blade) --}}
+    @stack('styles')
 </head>
 
 <style>
     [x-cloak] { display: none; }
-    
 </style>
 
 <body class="antialiased font-sans bg-gray-200">
@@ -22,6 +23,8 @@
     {{ $slot }}
 
     <livewire:scripts />
+    <!-- Satck me permet de charger du contenu précis en utilisant push sur la page souhaitée (voir date.blade) -->
+    @stack('scripts') 
 </body>
 
 </html>
