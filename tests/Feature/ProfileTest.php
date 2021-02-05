@@ -4,8 +4,10 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProfileTest extends TestCase
 {
@@ -32,11 +34,34 @@ class ProfileTest extends TestCase
             ->set('username', 'foo')
             ->set('about', 'bar')
             ->call('save');
-
-        $user->refresh();
+        
+        $user->refresh();        
 
         $this->assertEquals('foo', $user->username);
         $this->assertEquals('bar', $user->about);
+    }
+    
+    /** @test */
+    public function can_upload_avatar()
+    {
+        $user = User::factory()->create();
+
+        $file = UploadedFile::fake()->image('avatar.jpg');
+
+        // je fake l'upload du fichier pour éviter d'en créé un réellement
+        Storage::disk('avatars');
+
+        Livewire::actingAs($user)
+            ->test('profile')
+            ->set('username', 'John')
+            ->set('newAvatar', $file)
+            ->call('save');
+
+        $user->refresh();
+
+        $this->assertNotNull($user->avatar);
+
+        Storage::disk('avatars')->assertExists($user->avatar);
     }
 
     /** @test */
@@ -81,14 +106,14 @@ class ProfileTest extends TestCase
     }
     
     /** @test */
-    public function about_must_be_less_than_140_characters()
+    public function about_must_be_less_than_500_characters()
     {
         $user = User::factory()->create();
 
         Livewire::actingAs($user)
             ->test('profile')
             ->set('username', 'foo')
-            ->set('about', str_repeat('a', 250))
+            ->set('about', str_repeat('a', 510))
             ->call('save')
             ->assertHasErrors(['about' => 'max']);
     }
