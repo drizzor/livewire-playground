@@ -1,3 +1,5 @@
+@props(['showingImages' => false])
+
 <div class="flex items-center">
 
     {{ $slot }}
@@ -15,8 +17,12 @@
                 :class="{ 'outline-none border-blue-300 shadow-outline-blue' : focused }"
                 class="cursor-pointer py-2 px-3 border border-gray-300 rounded-md text-sm leading-4 font-medium text-gray-700 hover:text-gray-500 active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out"
             >
-                Changer
+                Charger
             </label>
         </span>
+        
+        <div class="grid grid-cols-3 gap-4">
+            {{ $showingImages }}
+        </div>
     </div>
 </div>

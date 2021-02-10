@@ -17,12 +17,15 @@ class Profile extends Component
     public $about = '';
     public $birthday = null;
     public $newAvatar;
+    public $newAvatars = [];
 
     protected $rules = [
         'username' => 'required|max:24',
         'about' => 'max:500',
         'birthday' => 'nullable|date_format:d/m/Y',
-        'newAvatar' => 'nullable|image|max:1000',
+        'newAvatar' => 'nullable|image|max:1024',
+        'newAvatars.*' => 'nullable|image|max:1024',
+        'newAvatars' => 'max:5',
     ];
 
     public function mount()
@@ -33,8 +36,8 @@ class Profile extends Component
     }
 
     public function updatedNewAvatar()
-    {
-        $this->validate(['newAvatar' => 'image|max:1000']);
+    {        
+        $this->validate(['newAvatar' => 'image|max:1024']);
     }
 
     public function save()
@@ -44,6 +47,7 @@ class Profile extends Component
         $this->validate();
 
         $filename = $this->manageFile();
+        $filenames = $this->manageFiles();
 
         User::where('id', $user->id)
             ->update([
@@ -53,6 +57,7 @@ class Profile extends Component
                     ? Carbon::createFromFormat('d/m/Y', $this->birthday)->format('Y-m-d')
                     : null,
                 'avatar' => $filename,
+                'avatars' => $filenames,
         ]);    
         
         // session()->flash('notify-saved');
@@ -70,6 +75,26 @@ class Profile extends Component
             return $this->newAvatar->store('/', 'avatars');
         }
         return auth()->user()->avatar;
+    }
+
+    private function manageFiles()
+    {
+        $arr = [];
+
+        if($this->newAvatars) {
+            if (auth()->user()->avatars){
+                foreach(unserialize(auth()->user()->avatars) as $file){
+                    Storage::disk('avatars')->delete($file);
+                }
+            }
+
+            foreach($this->newAvatars as $avatar) {
+                array_push($arr, $avatar->hashName());
+                $avatar->store('/', 'avatars');
+            }
+        }
+
+        return serialize($arr);
     }
 
     public function render()
