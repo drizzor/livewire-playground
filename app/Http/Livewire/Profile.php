@@ -25,7 +25,6 @@ class Profile extends Component
         'birthday' => 'nullable|date_format:d/m/Y',
         'newAvatar' => 'nullable|image|max:1024',
         'newAvatars.*' => 'nullable|image|max:1024',
-        'newAvatars' => 'max:5',
     ];
 
     public function mount()
@@ -37,7 +36,7 @@ class Profile extends Component
 
     public function updatedNewAvatar()
     {        
-        $this->validate(['newAvatar' => 'image|max:1024']);
+        $this->validate(['newAvatar' => 'nullable|image|max:1024']);
     }
 
     public function save()

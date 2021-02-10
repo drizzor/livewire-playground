@@ -31,13 +31,17 @@
             <x-input.group label="Multiple Upload" for="photos" :error="$errors->first('newAvatars.*')">
                 <x-input.file-upload wire:model="newAvatars" id="photos" multiple>
 
-                    <x-slot name="showingImages">
+                    {{-- <x-slot name="showingImages">
                         @foreach ($newAvatars as $avatar)
                             <img src="{{ $avatar->temporaryUrl() }}" alt="image preview" class="w-40 h-40">
                         @endforeach
-                    </x-slot>
+                    </x-slot> --}}
                 </x-input.file-upload>
             </x-input.group>
+
+            <x-input.group label="Drag & Drop" for="filepondUp" :error="$errors->first('newAvatars')">
+                <x-input.filepond wire:model="newAvatars" multiple />
+            </x-input.group> 
         </div>
 
         <div class="mt-8 border-t border-gray-200 pt-5">

@@ -12,6 +12,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <livewire:styles />
+    {{-- filepond CSS --}}
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
     
     {{-- je vais pouvoir push le style souhaitée sur une page précise (voir date.blade) --}}
     @stack('styles')
@@ -38,7 +41,10 @@
     {{ $slot }}
 
     <livewire:scripts />
-    <!-- Satck me permet de charger du contenu précis en utilisant push sur la page souhaitée (voir date.blade) -->
+    {{-- Filepond JS --}}
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script> 
+    <!-- Satck me permet de charger du contenu précis uniquement sur la page souhaitée avec push (voir date.blade) -->
     @stack('scripts') 
 </body>
 
