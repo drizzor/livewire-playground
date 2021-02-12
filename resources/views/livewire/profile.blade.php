@@ -13,7 +13,7 @@
             </x-input.group>
 
             <x-input.group label="A Propos" for="about" :error="$errors->first('about')" help-text="Quelque chose à ton propos.">
-                <x-input.rich-text wire:model.lazy="about" id="about" rows="3" :initial-value="$about" />
+                <x-input.rich-text wire:model.defer="about" id="about" rows="3" />
             </x-input.group>
             
             <x-input.group label="Photo" for="photo" :error="$errors->first('newAvatar')">

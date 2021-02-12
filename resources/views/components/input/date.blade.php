@@ -1,12 +1,12 @@
 <div 
-    x-data="{}"
+    x-data="{ value: @entangle($attributes->wire('model')) }"
     x-init="
         new Pikaday({ 
             field: $refs.input,
             format: 'DD/MM/YYYY',
         });
     "
-    @change="$dispatch('input', $event.target.value )"
+    @change="value = $event.target.value"
     class="flex rounded-md shadow-sm"
 >
     <span
@@ -18,8 +18,9 @@
     </span>
     
     <input 
-        {{ $attributes }}
+        {{ $attributes->whereDoesntStartWith('wire:model') }}
         x-ref="input"
+        :value="value"
         class="rounded-none border-l-0 rounded-r-md flex-1 py-3 pl-2 form-input block w-full border border-gray-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
     />
 </div>
