@@ -2,16 +2,19 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Dashboard extends Component
 {
+    use WithPagination;
+
     public function render()
     {
-        // if(Auth::guest())
-        //     return view('livewire.auth.login');
-
-        return view('livewire.dashboard');
+        return view('livewire.dashboard', [
+            'transactions' => Transaction::paginate(10),
+        ]);
     }
 }
