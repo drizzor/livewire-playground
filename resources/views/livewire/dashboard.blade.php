@@ -8,17 +8,17 @@
         <div class="flex-col space-y-4">
             <x-table>
                 <x-slot name="head">
-                    <x-table.heading sortable>
+                    <x-table.heading sortable wire:click="sortBy('title')" :direction="$sortField === 'title' ? $sortDirection : null">
                         Title
                     </x-table.heading>
             
-                    <x-table.heading sortable>
+                    <x-table.heading sortable wire:click="sortBy('amount')" :direction="$sortField === 'amount' ? $sortDirection : null">
                         Amount
                     </x-table.heading>
-                    <x-table.heading sortable>
+                    <x-table.heading sortable wire:click="sortBy('status')" :direction="$sortField === 'status' ? $sortDirection : null">
                         Status
                     </x-table.heading>
-                    <x-table.heading sortable>
+                    <x-table.heading sortable wire:click="sortBy('created_at')" :direction="$sortField === 'created_at' ? $sortDirection : null">
                         Date
                     </x-table.heading>
                 </x-slot>
