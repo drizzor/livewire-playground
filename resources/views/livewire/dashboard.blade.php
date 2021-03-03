@@ -1,13 +1,20 @@
 <div>
     <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
     <div class="py-4 space-y-4">
-        <div class="w-1/3">
-            <x-input.text wire:model="search" placeholder="Rechercher..." loader searchIcon />
+        <div class="flex justify-between">
+            <div class="w-1/3">
+                <x-input.text wire:model="search" placeholder="Rechercher..." loader searchIcon />
+            </div>
+            <div>
+                <x-button.primary wire:click="create">
+                    <x-icon.plus class="inline-block"/> Nouveau
+                </x-button.primary>
+            </div>
         </div>
         <div class="flex-col space-y-4">
             <x-table>
                 <x-slot name="head">
-                    <x-table.heading sortable wire:click="sortBy('title')" :direction="$sortField === 'title' ? $sortDirection : null">
+                    <x-table.heading class="w-1/2" sortable wire:click="sortBy('title')" :direction="$sortField === 'title' ? $sortDirection : null">
                         Title
                     </x-table.heading>
             
@@ -47,7 +54,6 @@
 
                             <x-table.cell>
                                 {{ $transaction->date_for_humans }}
-                                {{ $transaction->created_at_for_editing }}
                             </x-table.cell>
 
                             <x-table.cell>
@@ -79,7 +85,7 @@
             <x-slot name="content">
                 <div class="space-y-6">
                     <x-input.group for="title" label="Title" :error="$errors->first('editing.title')">
-                        <x-input.text wire:model="editing.title" id="title"/>
+                        <x-input.text wire:model="editing.title" id="title" placeholder="Title" />
                     </x-input.group>
                     <x-input.group for="amount" label="Amount" :error="$errors->first('editing.amount')">
                         <x-input.text wire:model="editing.amount" id="amount" leadingAddOn="€" />

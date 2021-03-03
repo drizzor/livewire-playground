@@ -34,6 +34,14 @@ class Dashboard extends Component
     }
 
     /**
+     * Init Transaction model
+     */
+    public function mount()
+    {
+        $this->editing = $this->makeBlankTransaction();
+    }
+
+    /**
      * Sort column by asc or desc
      */
     public function sortBy($field)
@@ -48,16 +56,37 @@ class Dashboard extends Component
     }
 
     /**
-     * Show Modal w/ content to edit
+     * for some case, Transaction model need to be set only with few thinks
      */
-    public function edit(Transaction $transaction)
+    public function makeBlankTransaction()
     {
-        $this->editing = $transaction;
+        return Transaction::make(['status' => 'success']);
+    }
+
+    /**
+     * Show modal to create new entry
+     */
+    public function create()
+    {
+        // getKey() check if editing has an id, in another words this medthod check if the data was from the DB and I need to reset this attribute only in this case. With this if the user close the modal and reopen it, the fields will stay with what user was filled up. 
+        if($this->editing->getKey()) 
+            $this->editing = $this->makeBlankTransaction();
+            
         $this->showEditModal = true;
     }
 
     /**
-     * Sauvegarder l'édition
+     * Show Modal to edit content targeted
+     */
+    public function edit(Transaction $transaction)
+    {
+        // isNot() check if editing attribute was build with the same model of the target transaction. I need to reinit the transaction model only if I open a new one. With this case the fields who have been filled up will stay if user escape the modal and reopen the same model. 
+        if($this->editing->isNot($transaction)) $this->editing = $transaction;
+        $this->showEditModal = true;
+    }
+
+    /**
+     * Update or create new content
      */
     public function save()
     {
