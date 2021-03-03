@@ -96,6 +96,15 @@ class Profile extends Component
         return serialize($arr);
     }
 
+    public function resetData()
+    {
+        $this->username = auth()->user()->username;
+        $this->about = auth()->user()->about;
+        $this->birthday = optional(auth()->user()->birthday)->format('d/m/Y');
+
+        $this->reset(['newAvatar', 'newAvatars']);
+    }
+
     public function render()
     {
         return view('livewire.profile');
