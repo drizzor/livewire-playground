@@ -44,8 +44,10 @@
     {{-- Filepond JS --}}
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script> 
-    <!-- Satck me permet de charger du contenu précis uniquement sur la page souhaitée avec push (voir date.blade) -->
-    @stack('scripts') 
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+    <script src="https://unpkg.com/moment"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+
 </body>
 
 </html>
