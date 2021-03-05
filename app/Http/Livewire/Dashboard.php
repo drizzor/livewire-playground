@@ -16,6 +16,7 @@ class Dashboard extends Component
     public $sortDirection = 'desc';
     public $showEditModal = false;
     public $showFilters = false; 
+    public $selected = [];
     public $filters = [
         'search' => '',
         'status' => '',
@@ -71,6 +72,28 @@ class Dashboard extends Component
         }
 
         $this->sortField = $field;
+    }
+
+    /**
+     * Export select row to csv file
+     */
+    public function exportSelected()
+    {
+        return response()->streamDownload(function () {
+            echo Transaction::whereKey($this->selected)->toCsv(); // toCsv is a macro from AppServiceProvider
+        }, 'transactions.csv');
+    }
+
+    /**
+     * Delete selected row from data table
+     */
+    public function deleteSelected()
+    {
+        $transactions = Transaction::whereKey($this->selected);
+        
+        $this->reset('selected');
+
+        $transactions->delete();
     }
 
     /**

@@ -11,13 +11,23 @@
                     Advanced Search...
                 </x-button.link>
             </div>
-            <div>
+            <div class="space-x-2">
+                <x-dropdown label="Bulk Actions">
+                    <x-dropdown.item wire:click="exportSelected">
+                        <x-icon.download class="text-gray-500 inline-block mr-2"/>Export
+                    </x-dropdown.item>
+
+                    <x-dropdown.item wire:click="deleteSelected">
+                        <x-icon.trash class="text-gray-500 inline-block mr-2"/>Delete
+                    </x-dropdown.item>
+                </x-dropdown>
+
                 <x-button.primary wire:click="create">
                     <x-icon.plus class="inline-block"/> Nouveau
                 </x-button.primary>
             </div>
         </div>
-        {{-- @json($filters) --}}
+        {{-- @json($selected) --}}
         <div>
             @if ($showFilters)
                 <div class="bg-gray-200 p-4 rounded shadow-inner flex relative">
@@ -58,6 +68,10 @@
         <div class="flex-col space-y-4">
             <x-table>
                 <x-slot name="head">
+                    <x-table.heading class="pr-0">
+                        <x-input.checkbox />
+                    </x-table.heading>
+
                     <x-table.heading class="w-1/2" sortable wire:click="sortBy('title')" :direction="$sortField === 'title' ? $sortDirection : null">
                         Title
                     </x-table.heading>
@@ -76,7 +90,11 @@
             
                 <x-slot name="body">
                     @forelse ($transactions as $transaction)
-                        <x-table.row>
+                        <x-table.row wire:key="row-{{ $transaction->id }}">
+                            <x-table.cell class="pr-0">
+                                <x-input.checkbox wire:model="selected" value="{{ $transaction->id }}"/>
+                            </x-table.cell>
+
                             <x-table.cell>
                                 <span class="inline-flex space-x-2 truncate text-sm leading-5">
                                     <x-icon.cash class="text-gray-400" />
