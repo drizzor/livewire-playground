@@ -14,8 +14,11 @@ class Dashboard extends Component
 
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
+    public $showDeleteModal = false;
     public $showEditModal = false;
     public $showFilters = false; 
+    public $selectPage = false;
+    public $selectAll = false;
     public $selected = [];
     public $filters = [
         'search' => '',
@@ -61,6 +64,35 @@ class Dashboard extends Component
     }
 
     /**
+     * After a "Select all" action if any row was unchecked after that action I need to turn selectAll off to render the page corretly w/ my checkbox uncheck
+     */
+    public function updatedSelected()
+    {
+        $this-> selectAll = false;
+        $this->selectPage = false;
+    }
+
+    /**
+     * Select or unselect all row from a page on data table
+     */
+    public function updatedSelectPage($value)
+    {
+        if($value) {
+            $this->selected = $this->transactions->pluck('id')->map(fn($id) => (string) $id); 
+        }
+        else
+            $this->selected = []; $this->selectAll = false;
+    }
+
+    /**
+     * Check if user make choice to select all entries
+     */
+    public function selectAll()
+    {
+        $this->selectAll = true;
+    }
+
+    /**
      * Sort column by asc or desc
      */
     public function sortBy($field)
@@ -80,7 +112,9 @@ class Dashboard extends Component
     public function exportSelected()
     {
         return response()->streamDownload(function () {
-            echo Transaction::whereKey($this->selected)->toCsv(); // toCsv is a macro from AppServiceProvider
+            echo $this->selectAll
+                ? $this->transactionsQuery->toCsv() // toCsv is a macro from AppServiceProvider
+                : $this->transactionsQuery->whereKey($this->selected)->toCsv();
         }, 'transactions.csv');
     }
 
@@ -89,11 +123,19 @@ class Dashboard extends Component
      */
     public function deleteSelected()
     {
-        $transactions = Transaction::whereKey($this->selected);
+        (clone $this->transactionsQuery)
+            ->unless($this->selectAll, fn($query) => $query->whereKey($this->selected))
+            ->delete();
+
+        // $transactions = $this->selectAll
+        //     ? $this->transactionsQuery
+        //     : $this->transactionsQuery->whereKey($this->selected);
         
+        // $transactions->delete();
+
         $this->reset('selected');
 
-        $transactions->delete();
+        $this->showDeleteModal = false;
     }
 
     /**
@@ -137,7 +179,7 @@ class Dashboard extends Component
     }
 
     /**
-     * Cleaning all filters - For reset button
+     * Cleaning all filters for advanced search - Action for reset button
      */
     public function resetFilters()
     {
@@ -156,22 +198,42 @@ class Dashboard extends Component
         }
     }
 
-    public function render()
+    /**
+     * Query builder for Transaction model
+     */
+    public function getTransactionsQueryProperty()
     {
-        $this->filters['date-min-formatted'] = $this->formattingDate($this->filters['date-min']);        
-        $this->filters['date-max-formatted'] = $this->formattingDate($this->filters['date-max']);        
+        $this->filters['date-min-formatted'] = $this->formattingDate($this->filters['date-min']);
+        $this->filters['date-max-formatted'] = $this->formattingDate($this->filters['date-max']);
 
-        return view('livewire.dashboard', [
-            'transactions' => Transaction::
+        return Transaction::
             when($this->filters['status'], fn($query, $status) => $query->where('status',  $status))
             ->when($this->filters['amount-min'], fn($query, $amount) => $query->where('amount', '>=', $amount))
             ->when($this->filters['amount-max'], fn($query, $amount) => $query->where('amount', '<=', $amount))
             ->when($this->filters['date-min-formatted'], fn($query, $date) => $query->where('created_at', '>=', Carbon::parse($date)))
             ->when($this->filters['date-max-formatted'], fn($query, $date) => $query->where('created_at', '<=', Carbon::parse($date)->add(1, 'day')))
             ->when($this->filters['search'], fn($query, $search) => $query->where('title', 'like', '%' . $search . '%'))
-           // ->search('title', $this->search) // search() is an helper created in AppServiceProvider
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate(10),
+        // ->search('title', $this->search) // search() is an helper created in AppServiceProvider
+            ->orderBy($this->sortField, $this->sortDirection);
+    }
+
+    /**
+     * Execute the query getTransactionsQueryProperty with a paginate()
+     * I need to work w/ separate way to be able to delete only all row from a search field when user click "select all" button. If I dont do that every data will be delete, not only the searched query  
+     */
+    public function getTransactionsProperty()
+    {
+        return $this->transactionsQuery->paginate(10);
+    }
+
+    public function render()
+    {
+        // with this conditionnal I'm able to check every checkbox when I select a new page. This case need to be done only if I have clicked on "Select All" button.
+        if($this->selectAll)
+            $this->selected = $this->transactions->pluck('id')->map(fn($id) => (string) $id); 
+
+        return view('livewire.dashboard', [
+            'transactions' => $this->transactions,
         ]);
     }
 }

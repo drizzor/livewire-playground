@@ -17,7 +17,7 @@
                         <x-icon.download class="text-gray-500 inline-block mr-2"/>Export
                     </x-dropdown.item>
 
-                    <x-dropdown.item wire:click="deleteSelected">
+                    <x-dropdown.item wire:click="$toggle('showDeleteModal')">
                         <x-icon.trash class="text-gray-500 inline-block mr-2"/>Delete
                     </x-dropdown.item>
                 </x-dropdown>
@@ -69,7 +69,7 @@
             <x-table>
                 <x-slot name="head">
                     <x-table.heading class="pr-0">
-                        <x-input.checkbox />
+                        <x-input.checkbox wire:model="selectPage" />
                     </x-table.heading>
 
                     <x-table.heading class="w-1/2" sortable wire:click="sortBy('title')" :direction="$sortField === 'title' ? $sortDirection : null">
@@ -89,6 +89,20 @@
                 </x-slot>
             
                 <x-slot name="body">
+                    @if ($selectPage)
+                        <x-table.row class="bg-blue-200" wire:key="row-message">
+                            <x-table.cell colspan="6">
+                                @if (!$selectAll)
+                                    <div>
+                                        <span>You have selected <b>{{ $transactions->count() }}</b> transactions, do you want to select all <b>{{ $transactions->total() }}</b>?</span>
+                                        <x-button.link wire:click="selectAll" class="ml-2 text-blue-600">Select All</x-button.link>
+                                    </div>
+                                @else 
+                                    <span>You are currently selecting all <b>{{ $transactions->total() }}</b> transactions.</span>
+                                @endif
+                            </x-table.cell>
+                        </x-table.row>
+                    @endif
                     @forelse ($transactions as $transaction)
                         <x-table.row wire:key="row-{{ $transaction->id }}">
                             <x-table.cell class="pr-0">
@@ -126,7 +140,7 @@
                         </x-table.row>
                     @empty
                     <x-table.row>
-                        <x-table.cell colspan="5">
+                        <x-table.cell colspan="6">
                             <div class="flex justify-center items-center space-x-3">
                                 <svg class="inline-block w-8 h-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
@@ -141,6 +155,20 @@
             <div>{{ $transactions->links() }}</div>
         </div>
     </div>
+
+    <form wire:submit.prevent="deleteSelected">
+        <x-modal.confirmation wire:model.defer="showDeleteModal">
+            <x-slot name="title">Delete Transaction</x-slot>
+            <x-slot name="content">
+                Are you sure you want to delete these transactions? This action is irreversible.  
+            </x-slot>
+            <x-slot name="footer">
+                <x-button.secondary type="button" wire:click="$set('showDeleteModal', false)">Annuler</x-button.secondary>
+                <x-button.danger type="submit">Delete</x-button.danger>
+            </x-slot>
+        </x-modal.confirmation>
+    </form>
+
     <form wire:submit.prevent="save">
         <x-modal.dialog wire:model.defer="showEditModal">
             <x-slot name="title">Editer la transaction</x-slot>
