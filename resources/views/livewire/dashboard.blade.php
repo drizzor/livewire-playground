@@ -1,6 +1,7 @@
 <div>
     <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
     <div class="py-4 space-y-4">
+        {{-- Top Bar --}}
         <div class="flex justify-between">
             <div class="flex w-1/2 space-x-4 items-center">
                 <x-input.text wire:model="filters.search" placeholder="Rechercher..." loader searchIcon />
@@ -27,7 +28,7 @@
                 </x-button.primary>
             </div>
         </div>
-        {{-- @json($selected) --}}
+        {{-- Advanced search --}}
         <div>
             @if ($showFilters)
                 <div class="bg-gray-200 p-4 rounded shadow-inner flex relative">
@@ -65,6 +66,7 @@
             @endif
         </div>
 
+        {{-- Transacrions Table --}}
         <div class="flex-col space-y-4">
             <x-table>
                 <x-slot name="head">
@@ -156,6 +158,7 @@
         </div>
     </div>
 
+    {{-- Delete Transactions Modal --}}
     <form wire:submit.prevent="deleteSelected">
         <x-modal.confirmation wire:model.defer="showDeleteModal">
             <x-slot name="title">Delete Transaction</x-slot>
@@ -169,6 +172,7 @@
         </x-modal.confirmation>
     </form>
 
+    {{-- Save Transactions Modal --}}
     <form wire:submit.prevent="save">
         <x-modal.dialog wire:model.defer="showEditModal">
             <x-slot name="title">Editer la transaction</x-slot>
