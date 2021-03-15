@@ -159,5 +159,6 @@
                 </div>
             </main>
         </div>
+        <x-notification />
     </div>
 </x-layouts.base>

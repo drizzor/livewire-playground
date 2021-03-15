@@ -11,7 +11,7 @@ use App\Http\Livewire\DataTable\WithPerPagePagination;
 
 class Dashboard extends Component
 {
-    use WithPerPagePagination, WithSorting, WithBulkActions;
+    use WithBulkActions, WithPerPagePagination, WithSorting;
 
     public $showDeleteModal = false;
     public $showEditModal = false;
@@ -30,6 +30,8 @@ class Dashboard extends Component
     public Transaction $editing;
 
     protected $queryString = ['sortField', 'sortDirection', 'perPage'];
+
+    protected $listeners = ['refreshTransactions' => '$refresh'];
 
     /**
      * rules obligatoire afin de pouvoir afficher $editing. Utilisation d'une méthode afin de pouvoir passer directement les status
@@ -76,7 +78,7 @@ class Dashboard extends Component
      */
     public function deleteSelected()
     {        
-            $this->selectedRowsQuery->delete();
+            $this->selectedRowsQuery()->delete();
 
         // $transactions = $this->selectAll
         //     ? $this->transactionsQuery

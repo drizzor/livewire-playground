@@ -32,8 +32,10 @@
                     </x-dropdown.item>
                 </x-dropdown>
 
+                <livewire:import-transactions />
+
                 <x-button.primary wire:click="create">
-                    <x-icon.plus class="inline-block"/> Nouveau
+                    <x-icon.plus class="inline-block"/> New
                 </x-button.primary>
 
             </div>
