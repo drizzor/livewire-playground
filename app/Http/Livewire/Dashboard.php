@@ -78,7 +78,7 @@ class Dashboard extends Component
      */
     public function deleteSelected()
     {        
-            $this->selectedRowsQuery()->delete();
+            $this->getSelectedRowsQuery()->delete();
 
         // $transactions = $this->selectAll
         //     ? $this->transactionsQuery
