@@ -5,13 +5,13 @@ namespace App\Http\Livewire;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Transaction;
-use Livewire\WithPagination;
 use App\Http\Livewire\DataTable\WithSorting;
 use App\Http\Livewire\DataTable\WithBulkActions;
+use App\Http\Livewire\DataTable\WithPerPagePagination;
 
 class Dashboard extends Component
 {
-    use WithPagination, WithSorting, WithBulkActions;
+    use WithPerPagePagination, WithSorting, WithBulkActions;
 
     public $showDeleteModal = false;
     public $showEditModal = false;
@@ -29,7 +29,7 @@ class Dashboard extends Component
 
     public Transaction $editing;
 
-    protected $queryString = ['sortField', 'sortDirection'];
+    protected $queryString = ['sortField', 'sortDirection', 'perPage'];
 
     /**
      * rules obligatoire afin de pouvoir afficher $editing. Utilisation d'une méthode afin de pouvoir passer directement les status
@@ -170,12 +170,12 @@ class Dashboard extends Component
     }
 
     /**
-     * Execute the query getRowsQueryProperty with a paginate()
-     * I need to work w/ separate way to be able to delete only all row from a search field when user click "select all" button. If I dont do that every data will be delete, not only the searched query  
+     * Retrieve the current query from getRowsQueryProperty and paginate them.
+     * I need to work w/ separate way to be able to delete only all row from a search field when user click "select all" button. If I dont do that every data will be deleted, not only the searched query  
      */
     public function getRowsProperty()
     {
-        return $this->rowsQuery->paginate(10);
+        return $this->applyPagination($this->rowsQuery);
     }
 
     public function render()

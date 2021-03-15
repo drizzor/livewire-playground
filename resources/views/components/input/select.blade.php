@@ -12,9 +12,9 @@
 
     <select
         {{ $attributes }}
-        class="{{ $leadingAddOn ? 'rounded-none border-l-0  rounded-r-md' : 'rounded' }} flex-1 py-3 pl-2 form-input block w-full border border-gray-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+        class="{{ $leadingAddOn ? 'rounded-none border-l-0  rounded-r-md' : 'rounded' }} flex-1 py-4 pl-2 form-input block w-full border border-gray-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
     >
-    {{ $slot }}
+        {{ $slot }}
     </select>
 </div>
 

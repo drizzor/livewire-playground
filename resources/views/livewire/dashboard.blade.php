@@ -12,7 +12,16 @@
                     Advanced Search...
                 </x-button.link>
             </div>
-            <div class="space-x-2">
+            <div class="space-x-2 flex items-center">
+
+                <x-input.group for="perPage" borderless label="Per Page">
+                    <x-input.select wire:model="perPage" id="perPage">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </x-input.select>
+                </x-input.group>
+
                 <x-dropdown label="Bulk Actions">
                     <x-dropdown.item wire:click="exportSelected">
                         <x-icon.download class="text-gray-500 inline-block mr-2"/>Export
@@ -26,6 +35,7 @@
                 <x-button.primary wire:click="create">
                     <x-icon.plus class="inline-block"/> Nouveau
                 </x-button.primary>
+
             </div>
         </div>
         {{-- Advanced search --}}
