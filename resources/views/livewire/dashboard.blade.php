@@ -5,12 +5,12 @@
         <div class="flex justify-between">
             <div class="flex w-1/2 space-x-4 items-center">
                 <x-input.text wire:model="filters.search" placeholder="Rechercher..." loader searchIcon />
-                <x-button.link wire:click="$toggle('showFilters')">
+                <x-button.link wire:click="toggleShowFilters">
                     @if($showFilters)
                         Hide  
                     @endif
                     Advanced Search...
-                </x-button.link>
+                </x-button.link> 
             </div>
             <div class="space-x-2 flex items-center">
 

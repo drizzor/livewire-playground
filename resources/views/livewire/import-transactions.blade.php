@@ -1,6 +1,6 @@
 <div>
     <x-button.secondary wire:click="$toggle('showModal')" class="flex items-center space-x-2">
-        <x-icon.upload class="text-gray-500" /> <span>Import</span>
+        <x-icon.upload class="text-gray-500 inline-block" /> Import
     </x-button.secondary>
 
     <form wire:submit.prevent="import">
@@ -12,7 +12,7 @@
                     <div class="py-12 flex flex-col items-center justify-center">
                         <div class="flex items-center space-x-2 text-xl">
                             <x-icon.upload class="text-gray-400 h-8 w-8" />
-                            <x-input.file-upload wire:model="upload" id="upload">
+                            <x-input.file-upload wire:model="upload" id="upload">   
                                 <span class="text-gray-500 font-bold">CSV File</span>
                             </x-input.file-upload>
                         </div>

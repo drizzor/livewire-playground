@@ -6,16 +6,17 @@ use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Transaction;
 use App\Http\Livewire\DataTable\WithSorting;
+use App\Http\Livewire\DataTable\WithCachedRows;
 use App\Http\Livewire\DataTable\WithBulkActions;
 use App\Http\Livewire\DataTable\WithPerPagePagination;
 
 class Dashboard extends Component
 {
-    use WithBulkActions, WithPerPagePagination, WithSorting;
+    use WithBulkActions, WithPerPagePagination, WithSorting, WithCachedRows;
 
     public $showDeleteModal = false;
     public $showEditModal = false;
-    public $showFilters = false;     
+    public $showFilters = false;
     public $filters = [
         'search' => '',
         'status' => '',
@@ -100,10 +101,22 @@ class Dashboard extends Component
     }
 
     /**
+     * Toggle for showing filters. I have to go through this method to catch filter and speed up everything. Its why I dont use livewire $toggle element
+     */
+    public function toggleShowFilters()
+    {
+        $this->useCacheRows();
+
+        $this->showFilters = !$this->showFilters;
+    }
+
+    /**
      * Show modal to create new entry
      */
     public function create()
     {
+        $this->useCacheRows();
+
         // getKey() check if editing has an id, in another words this medthod check if the data was from the DB and I need to reset this attribute only in this case. With this if the user close the modal and reopen it, the fields will stay with what user was filled up. 
         if($this->editing->getKey()) 
             $this->editing = $this->makeBlankTransaction();
@@ -116,6 +129,8 @@ class Dashboard extends Component
      */
     public function edit(Transaction $transaction)
     {
+        $this->useCacheRows();
+
         // isNot() check if editing attribute was build with the same model of the target transaction. I need to reinit the transaction model only if I open a new one. With this case the fields who have been filled up will stay if user escape the modal and reopen the same model. 
         if($this->editing->isNot($transaction)) $this->editing = $transaction;
         $this->showEditModal = true;
@@ -177,7 +192,9 @@ class Dashboard extends Component
      */
     public function getRowsProperty()
     {
-        return $this->applyPagination($this->rowsQuery);
+        return $this->cache(function () {
+            return $this->applyPagination($this->rowsQuery);
+        });
     }
 
     public function render()
